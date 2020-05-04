@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishe.mapper.BorrowInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="borrowResultMap" type="com.bishe.entity.BorrowInfo">
+        <id column="id" property="id"/>
+        <result column="book_id" property="bookId"/>
+        <result column="user_id" property="userId"/>
+        <result column="borrow_time" property="borrowTime"/>
+        <result column="return_time" property="returnTime"/>
+        <result column="borrow_code" property="borrowCode"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="save">
+        insert into borrow_info(id, book_id, user_id, borrow_time, return_time, borrow_code, status)
+        values (#{id}, #{bookId}, #{userId}, #{borrowTime}, #{returnTime}, #{borrowCode}, #{status})
+    </insert>
+
+    <delete id="delete">
+        delete from borrow_info where id = #{id}
+    </delete>
+
+    <update id="update">
+        update borrow_info set book_id=#{bookId}, user_id=#{userId}, borrow_time=#{borrowTime}, return_time = #{returnTime}, borrow_code = #{borrowCode}, status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="getByCode" resultMap="borrowResultMap">
+        select * from borrow_info where borrow_code = #{borrowCode} and status = 1
+    </select>
+
+    <select id="getByQuery" resultMap="borrowResultMap">
+        select * from borrow_info where user_id = #{userId} and book_id = #{bookId} and status = 1
+    </select>
+
+    <select id="getBorrowInfos" resultMap="borrowResultMap">
+        select * from borrow_info where 1=1
+        <if test="borrowCode != null">
+            and borrow_code = #{borrowCode}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </select>
+
+    <select id="getById" resultMap="borrowResultMap">
+        select * from borrow_info where id = #{id}
+    </select>
+
+</mapper>

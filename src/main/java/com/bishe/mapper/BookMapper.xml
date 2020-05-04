@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bishe.mapper.BookMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="bookResultMap" type="com.bishe.entity.Book">
+        <id column="id" property="id"/>
+        <result column="bookname" property="bookName"/>
+        <result column="author" property="author"/>
+        <result column="category" property="category"/>
+        <result column="publisher" property="publisher"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="save">
+        insert into book(id, bookname, author, category, publisher, status)
+        values (#{id}, #{bookName}, #{author}, #{category}, #{publisher}, #{status})
+    </insert>
+
+    <delete id="delete">
+        delete from book where id = #{id}
+    </delete>
+
+    <update id="update">
+        update book set bookname=#{bookName}, author=#{author}, category=#{category}, publisher = #{publisher}, status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="getBooks" resultMap="bookResultMap">
+        select * from book where 1 = 1
+        <if test="bookName != null">
+            and bookname = #{bookName}
+        </if>
+        <if test="category != null">
+            and category = #{category}
+        </if>
+        <if test="publisher != null">
+            and publisher = #{publisher}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </select>
+
+    <select id="getBookById" resultMap="bookResultMap">
+        select * from book where id = #{id}
+    </select>
+
+</mapper>
